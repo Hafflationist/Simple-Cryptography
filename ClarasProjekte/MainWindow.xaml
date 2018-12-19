@@ -1,0 +1,59 @@
+﻿<Window x:Class="MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ClarasProjekte"
+        mc:Ignorable="d"
+        Title="Crypt" Height="300" Width="300">
+    <TabControl >
+        <TabItem Header="Caeser">
+            <ScrollViewer VerticalScrollBarVisibility="Hidden">
+                <StackPanel>
+                    <TextBlock Text="Klartext:" Margin="4" />
+                    <TextBox x:Name="txt_plaintext" Margin="4" TextWrapping="Wrap"/>
+                    <TextBlock Text="Schlüssel:" Margin="4"/>
+                    <TextBox x:Name="txt_key" Margin="4"/>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="Verschlüsseln" Margin="4" Click="ButtonVerschlüsseln_Click"/>
+                        <Button Content="Entschlüsseln" Margin="4" Click="ButtonEntschlüsseln_Click"/>
+                    </StackPanel>
+                    <TextBlock Text="Chiffrat:" Margin="4"/>
+                    <TextBox x:Name="txt_ciphertext" Margin="4" TextWrapping="Wrap"/>
+                    <TextBlock x:Name="fehlerText" Foreground="Red" Margin="4" TextWrapping="Wrap"/>
+                </StackPanel>
+            </ScrollViewer>
+        </TabItem>
+        <TabItem Header="Vigenère">
+            <ScrollViewer VerticalScrollBarVisibility="Hidden">
+                <StackPanel>
+                    <TextBlock Text="Klartext:" Margin="4"/>
+                    <TextBox x:Name="txt_plaintext_vig" Margin="4" TextWrapping="Wrap"/>
+                    <TextBlock Text="Schlüssel:" Margin="4"/>
+                    <TextBox x:Name="txt_schlüssel_vig" Margin="4"/>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="Verschlüsseln" Margin="4" Click="ButtonVerschlüsseln_Vig_Click"/>
+                        <Button Content="Entschlüsseln" Margin="4" Click="ButtonEntschlüsseln_Vig_Click"/>
+                    </StackPanel>
+                    <TextBlock Text="Chiffrat:" Margin="4"/>
+                    <TextBox x:Name="txt_ciphertext_vig" Margin="4" TextWrapping="Wrap"/>
+                    <TextBlock x:Name="fehlerText_vig" Foreground="Red" Margin="4" TextWrapping="Wrap"/>
+                </StackPanel>
+            </ScrollViewer>
+        </TabItem>
+        <TabItem Header="Kasisky">
+            <ScrollViewer VerticalScrollBarVisibility="Hidden">
+                <StackPanel>
+                    <TextBlock Text="Chiffrat:" Margin="4"/>
+                    <TextBox x:Name="txt_ciphertext_kas" Margin="4" Height="100" TextWrapping="Wrap"/>
+                    <Button x:Name="cmd_test_kas" Content="Kryptoanalyse" Margin="4" Click="Cmd_test_kas_Click"/>
+                    <Border BorderThickness="1" BorderBrush="Gray" Background="Black" Margin="4">
+                        <ScrollViewer VerticalScrollBarVisibility="Hidden">
+                            <TextBlock x:Name="txt_output_kas" FontFamily="Consolas" Foreground="White" MinHeight="100"/>
+                        </ScrollViewer>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+        </TabItem>
+    </TabControl>
+</Window>
