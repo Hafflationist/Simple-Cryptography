@@ -68,48 +68,4 @@ Public Module Crypt
         End If
         Return New String(ciphertext.ToArray())
     End Function
-
-
-
-
-    Function CryptAnalysis(ciphertext As String)
-        Dim length = ciphertext.Length / 2
-        CryptAnalysis_inner(ciphertext, length)
-    End Function
-
-    Function CryptAnalysis_inner(ciphertext As String, n As Integer)
-        Dim toBeChecked = GetSubstrings(ciphertext, n)
-        Console.WriteLine("toBeChecked: " + toBeChecked(0))
-        Return GetPositions(ciphertext, toBeChecked(0))
-    End Function
-
-
-
-    Function GetSubstrings(text As String, n As Integer) As List(Of String)
-        Dim knownSubstrings As List(Of String) = New List(Of String)
-        For index As Integer = 0 To (text.Length - (2 * n))
-            Dim substring = text.Substring(index, n)
-            If Not knownSubstrings.Contains(substring) Then
-                knownSubstrings.Add(substring)
-                Console.WriteLine()
-            End If
-        Next
-        Return knownSubstrings
-    End Function
-
-
-    Function GetPositions(text As String, substring As String) As List(Of Integer)
-        Dim posList = New List(Of Integer)
-        Dim pos = -1
-        Do
-            pos += 1
-            pos = text.IndexOf(substring, pos)
-            Console.WriteLine("pos: " + pos.ToString())
-            If pos <> -1 Then
-                posList.Add(pos)
-            End If
-        Loop Until pos = -1
-        Return posList
-    End Function
-
 End Module

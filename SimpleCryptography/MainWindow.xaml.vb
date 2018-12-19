@@ -54,9 +54,21 @@
     End Sub
 
     Private Sub Cmd_test_kas_Click(sender As Object, e As RoutedEventArgs)
-        Dim hugo = CryptAnalysis_inner(txt_ciphertext_kas.Text, 2)
-        For Each item As String In hugo
-            txt_output_kas.Text += item + " "
+        txt_output_kas.Text = String.Empty
+        Dim hugo = CryptAnalysis(txt_ciphertext_kas.Text)
+        For Each key As String In hugo.Keys
+            Dim list As List(Of Integer)
+            If hugo.TryGetValue(key, list) Then
+                txt_output_kas.Text += key + ": " + vbTab
+                For Each pos As Integer In list
+                    txt_output_kas.Text += pos.ToString() + ", "
+                Next
+                txt_output_kas.Text += vbNewLine
+            End If
         Next
+        'Dim hugo = CryptAnalysis_inner(txt_ciphertext_kas.Text, 2)
+        'For Each item As String In hugo
+        '    txt_output_kas.Text += item + " "
+        'Next
     End Sub
 End Class
