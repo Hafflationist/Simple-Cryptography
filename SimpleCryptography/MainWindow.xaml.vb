@@ -53,23 +53,48 @@
         txt_plaintext_vig.Text = CryptVigenère(key, txt_ciphertext_vig.Text, Function(x) -x)
     End Sub
 
+    ''' <summary>
+    ''' Ereignisbehandlung für die Ausführung des Kasiskitests
+    ''' </summary>
+    ''' <param name="sender">Objekt, dass das Ereignis ausgelöst hat</param>
+    ''' <param name="e">Gesonderte Eigenschaften des Ereignisses</param>
     Private Sub Cmd_test_kas_Click(sender As Object, e As RoutedEventArgs)
         txt_output_kas.Text = String.Empty
-        Dim hugo = CryptAnalysis(txt_ciphertext_kas.Text)
-        For Each key As String In hugo.Keys
-            Dim list As List(Of Integer)
-            If hugo.TryGetValue(key, list) Then
-                txt_output_kas.Text += key + ": " + vbTab
-                For Each pos As Integer In list
-                    txt_output_kas.Text += pos.ToString() + ", "
-                Next
-                txt_output_kas.Text += vbNewLine
-            End If
+        Dim result = CryptAnalysis(txt_ciphertext_kas.Text)
+        Dim factors = result.FactorsWithCount.Keys.ToList()
+        factors.Sort(Function(x, y)
+                         Dim countX As Integer
+                         Dim countY As Integer
+                         result.FactorsWithCount.TryGetValue(x, countX)
+                         result.FactorsWithCount.TryGetValue(y, countY)
+                         Return countY - countX
+                     End Function)
+
+        txt_output_kas.Text += "Primfaktoren nach Häufigkeit:" + vbNewLine
+
+        For Each key As Integer In factors
+            Dim numberCount As Integer
+            result.FactorsWithCount.TryGetValue(key, numberCount)
+            txt_output_kas.Text += key.ToString() + ":" + vbTab + numberCount.ToString() + vbNewLine
         Next
-        txt_output_kas.Text += vbNewLine + "Abstände:" + vbNewLine
-        Dim diffs = GetDiffs(hugo)
-        For Each item As Integer In diffs
-            txt_output_kas.Text += item.ToString() + vbNewLine
+        txt_output_kas.Text += vbNewLine
+
+        Dim possibleKeysLengthSet = New HashSet(Of Integer)
+
+        factors.Add(1)
+        For Each number1 As Integer In factors
+            For Each number2 As Integer In factors
+                possibleKeysLengthSet.Add(number1 * number2)
+            Next
         Next
+        possibleKeysLengthSet.Remove(1)
+        Dim possibleKeysLength = possibleKeysLengthSet.ToList()
+        possibleKeysLength.Sort(Function(x, y) y - x)
+        txt_output_kas.Text += vbNewLine + "Folgende Werte und einige ihrer multiplikativen Kombinationen entsprechen wahrscheinlich der Länge des verwendeten Schlüssels:" + vbNewLine
+        For Each length As Integer In possibleKeysLength
+            txt_output_kas.Text += length.ToString() + vbNewLine
+        Next
+
+
     End Sub
 End Class

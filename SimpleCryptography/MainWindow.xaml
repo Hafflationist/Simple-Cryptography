@@ -48,7 +48,7 @@
                     <TextBox x:Name="txt_ciphertext_kas" Margin="4" Height="100" TextWrapping="Wrap"/>
                     <Button x:Name="cmd_test_kas" Content="Test starten" Margin="4" Click="Cmd_test_kas_Click"/>
                     <Border BorderThickness="1" BorderBrush="Gray" Background="Black" Margin="4">
-                            <TextBlock x:Name="txt_output_kas" FontFamily="Consolas" Foreground="White" MinHeight="100"/>
+                        <TextBlock x:Name="txt_output_kas" FontFamily="Consolas" TextWrapping="Wrap" Foreground="White" MinHeight="100"/>
                     </Border>
                 </StackPanel>
             </ScrollViewer>
