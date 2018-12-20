@@ -66,9 +66,10 @@
                 txt_output_kas.Text += vbNewLine
             End If
         Next
-        'Dim hugo = CryptAnalysis_inner(txt_ciphertext_kas.Text, 2)
-        'For Each item As String In hugo
-        '    txt_output_kas.Text += item + " "
-        'Next
+        txt_output_kas.Text += vbNewLine + "Abstände:" + vbNewLine
+        Dim diffs = GetDiffs(hugo)
+        For Each item As Integer In diffs
+            txt_output_kas.Text += item.ToString() + vbNewLine
+        Next
     End Sub
 End Class

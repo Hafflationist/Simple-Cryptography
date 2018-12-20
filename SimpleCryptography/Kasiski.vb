@@ -1,5 +1,6 @@
 ﻿Module Kasiski
     Function CryptAnalysis(ciphertext As String) As Dictionary(Of String, List(Of Integer))
+        ciphertext = New String(ciphertext.Where(Function(x) Not Char.IsWhiteSpace(x)).ToArray())
         Dim length = ciphertext.Length / 2
         Dim positionsOfSubstrings = CryptAnalysis_inner(ciphertext, length, New Dictionary(Of String, List(Of Integer)))
         ' Neues Dictionary ohne Einzelvorkommen erstellen:
@@ -12,7 +13,52 @@
                 End If
             End If
         Next
+        Dim diffs = GetDiffs(relevantPositions)
         Return relevantPositions
+    End Function
+
+
+    Private Function FindFactors(ByVal num As Long) As List(Of
+    Long)
+        Dim result As List(Of Long) = New List(Of Long)()
+
+        ' Take out the 2s.
+        Do While (num Mod 2 = 0)
+            result.Add(2)
+            num \= 2
+        Loop
+
+        ' Take out other primes.
+        Dim factor As Long = 3
+        Do While (factor * factor <= num)
+            If (num Mod factor = 0) Then
+                ' This is a factor.
+                result.Add(factor)
+                num \= factor
+            Else
+                ' Go to the next odd number.
+                factor += 2
+            End If
+        Loop
+
+        ' If num is not 1, then whatever is left is prime.
+        If (num > 1) Then result.Add(num)
+
+        Return result
+    End Function
+
+    Function GetDiffs(dicc As Dictionary(Of String, List(Of Integer))) As List(Of Integer)
+        Dim diffList = New List(Of Integer)
+        For Each posList As List(Of Integer) In dicc.Values
+            Dim lastPos = posList(0)
+            For Each actualPos As Integer In posList
+                If Not lastPos = actualPos Then
+                    diffList.Add(actualPos - lastPos)
+                    lastPos = actualPos
+                End If
+            Next
+        Next
+        Return diffList
     End Function
 
     Function CryptAnalysis_inner(ciphertext As String, n As Integer, dicc As Dictionary(Of String, List(Of Integer))) As Dictionary(Of String, List(Of Integer))
@@ -22,7 +68,6 @@
         Dim toBeChecked = GetSubstrings(ciphertext, n)
 
         For Each substr As String In toBeChecked
-            Console.WriteLine("toBeChecked: " + substr)
             Dim positions = GetPositions(ciphertext, substr)
             dicc.Add(substr, positions)
         Next
@@ -49,7 +94,6 @@
         Do
             pos += 1
             pos = text.IndexOf(substring, pos)
-            Console.WriteLine(vbTab + "pos: " + pos.ToString())
             If pos <> -1 Then
                 posList.Add(pos)
             End If
